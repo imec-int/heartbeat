@@ -1,0 +1,86 @@
+/*
+ * libHeartbeat (https://github.com/imec-apt/libheartbeat)
+ *  Copyright 2018 Matthias Stevens, IMEC vzw, Belgium.
+ *  Released to the public domain (CC0-v1.0 license: https://creativecommons.org/publicdomain/zero/1.0/).
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+dependencies {
+    //implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'uk.me.berndporr:iirj:1.1'
+
+    testImplementation 'junit:junit:4.12'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier 'javadoc'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'be.imec.apt'
+            artifactId 'libheartbeat'
+            version '1.0.0'
+
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'libHeartbeat'
+                description = 'A Java library to synthesise heartbeat sounds, ported from MATLAB (https://github.com/bencholmes/heartbeat).'
+                url = 'https://github.com/imec-apt/libheartbeat'
+                licenses {
+                    license {
+                        name = 'Public domain (CC0-v1.0)'
+                        url = 'https://creativecommons.org/publicdomain/zero/1.0/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'mstevens83'
+                        name = 'Matthias Stevens'
+                        email = 'matthias.stevens@imec.be'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com:imec-apt/libheartbeat.git'
+                    developerConnection = 'scm:git:ssh://github.com:imec-apt/libheartbeat.git'
+                    url = 'https://github.com/imec-apt/libheartbeat'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            mavenLocal()
+        }
+    }
+}
