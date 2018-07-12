@@ -3,7 +3,7 @@
 Heartbeat audio signal synthesis tool, written in "pure" Java.
  
 Based on from [Ben Holmes](https://github.com/bencholmes)' [MATLAB implementation](https://github.com/bencholmes/heartbeat). Ported to Java by [Matthias Stevens](https://github.com/mstevens83) for [IMEC APT](https://github.com/imec-apt).
-Like Ben's original this code is released to the public domain([CC0-v1.0 "license"](https://creativecommons.org/publicdomain/zero/1.0/)), except for the classes in the `be.imec.apt.heartbeat.utils` package (see below).
+Like Ben's original this code is released to the public domain ([CC0-v1.0 "license"](https://creativecommons.org/publicdomain/zero/1.0/)), except for the classes in the `be.imec.apt.heartbeat.utils` package (see below).
 
 ## libHeartbeat uses:
 - [Bernd Porr's iirj library](https://github.com/berndporr/iirj), as an external Maven dependency;
