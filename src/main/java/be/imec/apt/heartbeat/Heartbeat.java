@@ -66,17 +66,43 @@ public final class Heartbeat {
 	 *         b, a = signal.iirpeak(w0, Q);
 	 *
 	 *     computeIIRPeakCoeffs(44100, 110, 120);
-	 *     computeIIRPeakCoeffs(48000, 110, 120);
 	 * </pre>
 	 */
 	static private final Map<Integer, IirFilterCoefficients> CHEST_RESONANCE_IIRPEAK_COEFFS = new HashMap<>(2);
 	static {
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(4000, new IirFilterCoefficients(
+											new double[] {        1.0, -1.80006264,   0.82727195 },
+											new double[] { 0.08636403,          0.0, -0.08636403 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(8000, new IirFilterCoefficients(
+											new double[] {        1.0,  -1.90280667,   0.90992999 },
+											new double[] { 0.04503501,          0.0,  -0.04503501 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(11025, new IirFilterCoefficients(
+											new double[] {        1.0,   -1.9300491,  0.93384782 },
+											new double[] { 0.03307609,          0.0,  -0.03307609 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(22050, new IirFilterCoefficients(
+											new double[] {        1.0,  -1.96541147,  0.96637737 },
+											new double[] { 0.01681132,          0.0, -0.01681132 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(32000, new IirFilterCoefficients(
+											new double[] {        1.0,   -1.9762503,   0.97671134 },
+											new double[] { 0.01164433,          0.0,  -0.01164433 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(44100, new IirFilterCoefficients(
-											new double[] {       1.0, -1.98280387,  0.9830474 },
-											new double[] { 0.0084763,         0.0, -0.0084763 }));
+											new double[] {        1.0,  -1.98280387,   0.9830474 },
+											new double[] {  0.0084763,          0.0,  -0.0084763 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(48000, new IirFilterCoefficients(
-											new double[] {       1.0, -1.98420842,  0.98441413 },
-											new double[] { 0.00779294,        0.0, -0.00779294 }));
+											new double[] {        1.0,  -1.98420842,   0.98441413 },
+											new double[] { 0.00779294,          0.0,  -0.00779294 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(64000, new IirFilterCoefficients(
+											new double[] {        1.0,  -1.98817194,  0.98828788 },
+											new double[] { 0.00585606,          0.0, -0.00585606 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(88200, new IirFilterCoefficients(
+											new double[] {        1.0,  -1.99142664,  0.99148778 },
+											new double[] { 0.00425611,          0.0, -0.00425611 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(96000, new IirFilterCoefficients(
+											new double[] {        1.0,  -1.99212507,  0.9921767 },
+											new double[] { 0.00391165,          0.0, -0.00391165 }));
+		CHEST_RESONANCE_IIRPEAK_COEFFS.put(192000, new IirFilterCoefficients(
+											new double[] {        1.0,  -1.99606777,  0.9960807 },
+											new double[] { 0.00195965,          0.0, -0.00195965 }));
 	};
 
 	private Heartbeat() {}
