@@ -9,6 +9,9 @@ build/
 # Compiled class file
 *.class
 
+# Test output
+output/
+
 # (Eclipse/Maven) Generated files
 bin/
 gen/
