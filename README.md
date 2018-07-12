@@ -1,4 +1,5 @@
 # libHeartbeat
+[![](https://jitpack.io/v/imec-apt/heartbeat.svg)](https://jitpack.io/#imec-apt/heartbeat)
 
 Heartbeat audio signal synthesis tool, written in "pure" Java.
  
