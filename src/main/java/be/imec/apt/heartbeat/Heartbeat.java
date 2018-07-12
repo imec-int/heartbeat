@@ -161,35 +161,17 @@ public final class Heartbeat {
 
 		// Filter if needed:
 		if(filtered) {
-			//double[] original = Arrays.copyOf(heartbeatSamples, heartbeatSamples.length);
-
 			//Filtering to simulate resonant "abdomen"
 			//	Butterworth 3rd order bandpass:
 			final Butterworth bandpass = new Butterworth();
 			bandpass.bandPass(3, sampleRate, (20 + 140 + tempoBpm) / 2, (140 + tempoBpm - 20));
 			applyFilter(bandpass, heartbeatSamples);
-
-			//double[] copy = Arrays.copyOf(heartbeatSamples, heartbeatSamples.length);
-
 			//	Peaking filter
 			IirFilterCoefficients coeffs = CHEST_RESONANCE_IIRPEAK_COEFFS.get(sampleRate);
 			if(coeffs == null)
 				throw new IllegalArgumentException("Unsupported sample rate");
 			final IirFilter iirChris = new IirFilter(coeffs);
 			iirChris.apply(heartbeatSamples);
-
-			// For debugging:
-			/*try {
-				File csv = new File("C:\\Temp\\signals.csv");
-				FileWriter fw = new FileWriter(csv);
-				csv.createNewFile();
-				fw.write("band+ip,unfiltered,band\n");
-				for(int i = 0; i < heartbeatSamples.length; i++)
-					fw.write(heartbeatSamples[i] + "," + original[i] + "," + copy[i] +"\n");
-				fw.close();
-			} catch(Exception e) {
-				System.err.print(e.getStackTrace());
-			}*/
 		}
 
 		// Return normalised samples:
