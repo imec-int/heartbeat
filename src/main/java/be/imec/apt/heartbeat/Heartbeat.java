@@ -195,7 +195,7 @@ public final class Heartbeat {
 			//	Peaking filter
 			IirFilterCoefficients coeffs = CHEST_RESONANCE_IIRPEAK_COEFFS.get(sampleRate);
 			if(coeffs == null)
-				throw new IllegalArgumentException("Unsupported sample rate");
+				throw new IllegalArgumentException("Unsupported sample rate for filtering: " + sampleRate);
 			final IirFilter iirChris = new IirFilter(coeffs);
 			iirChris.apply(heartbeatSamples);
 		}
