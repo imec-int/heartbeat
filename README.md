@@ -13,7 +13,7 @@ Like Ben's original this code is released to the public domain ([CC0-v1.0 "licen
 ## Using this library
 The easiest way to use this library in your Java or Android project is to rely on [JitPack.io](https://jitpack.io). In your `build.gradle` file:
 - add `maven { url 'https://jitpack.io' }` to the list of `repositories`;
-- and add `implementation 'com.github.imec-apt:libheartbeat:1.0.0'` to the `dependencies`.
+- and add `implementation 'com.github.imec-apt:heartbeat:1.0.0'` to the `dependencies`.
 
 ## Special thanks to:
  - [Ben Holmes](https://github.com/bencholmes), for creating of the MATLAB original and helping me port it;
