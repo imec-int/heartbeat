@@ -1,5 +1,5 @@
 /*
- * libHeartbeat (https://github.com/imec-apt/libheartbeat)
+ * libHeartbeat (https://github.com/imec-apt/heartbeat)
  *  Copyright 2018 Matthias Stevens, IMEC vzw, Belgium.
  *  Released to the public domain (CC0-v1.0 license: https://creativecommons.org/publicdomain/zero/1.0/).
  */

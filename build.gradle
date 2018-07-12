@@ -1,5 +1,5 @@
 /*
- * libHeartbeat (https://github.com/imec-apt/libheartbeat)
+ * libHeartbeat (https://github.com/imec-apt/heartbeat)
  *  Copyright 2018 Matthias Stevens, IMEC vzw, Belgium.
  *  Released to the public domain (CC0-v1.0 license: https://creativecommons.org/publicdomain/zero/1.0/).
  */
@@ -56,7 +56,7 @@ publishing {
             pom {
                 name = 'libHeartbeat'
                 description = 'A Java library to synthesise heartbeat sounds, ported from MATLAB (https://github.com/bencholmes/heartbeat).'
-                url = 'https://github.com/imec-apt/libheartbeat'
+                url = 'https://github.com/imec-apt/heartbeat'
                 licenses {
                     license {
                         name = 'Public domain (CC0-v1.0)'
@@ -71,9 +71,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com:imec-apt/libheartbeat.git'
-                    developerConnection = 'scm:git:ssh://github.com:imec-apt/libheartbeat.git'
-                    url = 'https://github.com/imec-apt/libheartbeat'
+                    connection = 'scm:git:git://github.com:imec-apt/heartbeat.git'
+                    developerConnection = 'scm:git:ssh://github.com:imec-apt/heartbeat.git'
+                    url = 'https://github.com/imec-apt/heartbeat'
                 }
             }
         }
