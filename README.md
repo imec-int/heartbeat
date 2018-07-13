@@ -8,7 +8,7 @@ Like Ben's original this code is released to the public domain ([CC0-v1.0 "licen
 
 ## libHeartbeat uses:
 - [Bernd Porr's iirj library](https://github.com/berndporr/iirj), as an external Maven dependency;
-- a small portion of [Christian d'Heureuse's Java DSP collection](http://www.source-code.biz/dsp/java): 2 modified source files in published here (see `be.imec.apt.heartbeat.utils` package), EPLv 1.0 &amp; LGPL v2.1 apply;
+- a small portion of [Christian d'Heureuse's Java DSP collection](http://www.source-code.biz/dsp/java): 2 modified source files published here (see `be.imec.apt.heartbeat.utils` package), EPLv 1.0 &amp; LGPL v2.1 apply;
  - a small portion of [Phil Burk's Java audio synthesizer library](https://github.com/philburk/jsyn): 1 modified source file published here (see `be.imec.apt.heartbeat.utils` package), Apache License v2.0 applies.
  
 ## Using this library
