@@ -18,4 +18,5 @@ The easiest way to use this library in your Java or Android project is to rely o
 
 ## Special thanks to:
  - [Ben Holmes](https://github.com/bencholmes), for creating of the MATLAB original and helping me port it;
+ - [Bernd Porr](https://github.com/berndporr) for answering my [iirj](https://github.com/berndporr/iirj) questions;
  - and [Joren Six (IPEM, Ghent University)](https://github.com/JorenSix) for advising me.
