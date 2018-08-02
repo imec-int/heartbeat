@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package be.imec.apt.heartbeat.utils;
+package be.imec.apt.heartbeat.utils.thirdparty;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

@@ -14,30 +14,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import be.imec.apt.heartbeat.utils.IirFilter;
-import be.imec.apt.heartbeat.utils.IirFilterCoefficients;
-import be.imec.apt.heartbeat.utils.WaveFileWriter;
+import be.imec.apt.heartbeat.utils.thirdparty.IirFilter;
+import be.imec.apt.heartbeat.utils.thirdparty.IirFilterCoefficients;
+import be.imec.apt.heartbeat.utils.thirdparty.WaveFileWriter;
+import be.imec.apt.heartbeat.utils.AudioTools;
 import uk.me.berndporr.iirj.Butterworth;
-import uk.me.berndporr.iirj.Cascade;
 
 /**
  * Heartbeat audio signal synthesis tool, written in "pure" Java.
  *
- * Based on Ben Holmes' Matlab implementation (https://github.com/bencholmes/heartbeat),
- * ported to Java by Matthias Stevens (matthias.stevens@imec.be) for IMEC APT.
- * Like Ben's original this code is released to the public domain (CC0-v1.0 license),
- * except for the classes in the be.imec.apt.heartbeat.utils package (see below).
+ * Based on Ben Holmes' MATLAB implementation (https://github.com/bencholmes/heartbeat),
+ * ported to Java by Matthias Stevens (matthias.stevens@imec.be) for imec APT.
+ * Just like Ben's original this code is released to the public domain (CC0-v1.0 license),
+ * except for the classes in the be.imec.apt.heartbeat.utils.thirdparty package (see below).
  *
  * Uses:
  *  - Bernd Porr's iirj library (https://github.com/berndporr/iirj),
  *      as an external dependency;
  *  - a small portion of Christian d'Heureuse's Java DSP collection (http://www.source-code.biz/dsp/java),
- *      2 modified source files published here (see be.imec.apt.heartbeat.utils package), EPLv 1.0 &amp; LGPL v2.1 apply;
+ *      2 modified source files published here (see be.imec.apt.heartbeat.utils.thirdparty package), EPLv 1.0 &amp; LGPL v2.1 apply;
  *  - a small portion of Phil Burk's Java audio synthesizer library (https://github.com/philburk/jsyn),
- *      1 modified source file published here (see be.imec.apt.heartbeat.utils package), Apache License v2.0 applies.
+ *      1 modified source file published here (see be.imec.apt.heartbeat.utils.thirdparty package), Apache License v2.0 applies.
  *
  * Special thanks to:
- *  - Ben Holmes, for creating of the Matlab original and helping me port it;
+ *  - Ben Holmes, for creating of the MATLAB original and helping me port it;
  *  - and Joren Six (IPEM, Ghent University, https://github.com/JorenSix) for advising me.
  *
  * @author Matthias Stevens (C) 2018 IMEC vzw
@@ -68,42 +68,42 @@ public final class Heartbeat {
 	 *     computeIIRPeakCoeffs(44100, 110, 120);
 	 * </pre>
 	 */
-	static private final Map<Integer, IirFilterCoefficients> CHEST_RESONANCE_IIRPEAK_COEFFS = new HashMap<>(2);
+	static private final Map<Integer, IirFilterCoefficients> CHEST_RESONANCE_IIRPEAK_COEFFS = new HashMap<>();
 	static {
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(4000, new IirFilterCoefficients(
-											new double[] {        1.0, -1.80006264,   0.82727195 },
-											new double[] { 0.08636403,          0.0, -0.08636403 }));
+											new double[] {  1.0,        -1.80006264,  0.82727195 },
+											new double[] {  0.08636403,  0.0,        -0.08636403 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(8000, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.90280667,   0.90992999 },
-											new double[] { 0.04503501,          0.0,  -0.04503501 }));
+											new double[] {  1.0,        -1.90280667,  0.90992999 },
+											new double[] {  0.04503501,  0.0,        -0.04503501 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(11025, new IirFilterCoefficients(
-											new double[] {        1.0,   -1.9300491,  0.93384782 },
-											new double[] { 0.03307609,          0.0,  -0.03307609 }));
+											new double[] {  1.0,        -1.9300491,   0.93384782 },
+											new double[] {  0.03307609,  0.0,        -0.03307609 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(22050, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.96541147,  0.96637737 },
-											new double[] { 0.01681132,          0.0, -0.01681132 }));
+											new double[] {  1.0,        -1.96541147,  0.96637737 },
+											new double[] {  0.01681132,  0.0,        -0.01681132 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(32000, new IirFilterCoefficients(
-											new double[] {        1.0,   -1.9762503,   0.97671134 },
-											new double[] { 0.01164433,          0.0,  -0.01164433 }));
+											new double[] {  1.0,        -1.9762503,   0.97671134 },
+											new double[] {  0.01164433,  0.0,        -0.01164433 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(44100, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.98280387,   0.9830474 },
-											new double[] {  0.0084763,          0.0,  -0.0084763 }));
+											new double[] {  1.0,        -1.98280387,  0.9830474 },
+											new double[] {  0.0084763,   0.0,        -0.0084763 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(48000, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.98420842,   0.98441413 },
-											new double[] { 0.00779294,          0.0,  -0.00779294 }));
+											new double[] {  1.0,        -1.98420842,  0.98441413 },
+											new double[] {  0.00779294,  0.0,        -0.00779294 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(64000, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.98817194,  0.98828788 },
-											new double[] { 0.00585606,          0.0, -0.00585606 }));
+											new double[] {  1.0,        -1.98817194,  0.98828788 },
+											new double[] {  0.00585606,  0.0,        -0.00585606 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(88200, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.99142664,  0.99148778 },
-											new double[] { 0.00425611,          0.0, -0.00425611 }));
+											new double[] {  1.0,        -1.99142664,  0.99148778 },
+											new double[] {  0.00425611,  0.0,        -0.00425611 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(96000, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.99212507,  0.9921767 },
-											new double[] { 0.00391165,          0.0, -0.00391165 }));
+											new double[] {  1.0,        -1.99212507,  0.9921767  },
+											new double[] {  0.00391165,  0.0,        -0.00391165 }));
 		CHEST_RESONANCE_IIRPEAK_COEFFS.put(192000, new IirFilterCoefficients(
-											new double[] {        1.0,  -1.99606777,  0.9960807 },
-											new double[] { 0.00195965,          0.0, -0.00195965 }));
-	};
+											new double[] {  1.0,        -1.99606777,  0.9960807  },
+											new double[] {  0.00195965,  0.0,        -0.00195965 }));
+	}
 
 	private Heartbeat() {}
 
@@ -177,10 +177,10 @@ public final class Heartbeat {
 		// Synthesize unfiltered heartbeat:
 		final DoubleBuffer beatBff = DoubleBuffer.allocate(beatNs); // init to all zeros
 		// First "half-beat" at 80% gain:
-		beatBff.put(mult(0.8, synthHalfHeartbeat(halfBeatNs)));
+		beatBff.put(AudioTools.gain(0.8, synthHalfHeartbeat(halfBeatNs)));
 		advanceBuffer(beatBff, shortPauseNs);
 		// Second "half-beat" at 100% gain:
-		beatBff.put(/*mult(1.0, */synthHalfHeartbeat(halfBeatNs)/*)*/);
+		beatBff.put(/*AudioTools.gain(1.0, */synthHalfHeartbeat(halfBeatNs)/*)*/);
 		advanceBuffer(beatBff, longPauseNs);
 
 		double[] heartbeatSamples = beatBff.array();
@@ -191,17 +191,16 @@ public final class Heartbeat {
 			//	Butterworth 3rd order bandpass:
 			final Butterworth bandpass = new Butterworth();
 			bandpass.bandPass(3, sampleRate, (20 + 140 + tempoBpm) / 2, (140 + tempoBpm - 20));
-			applyFilter(bandpass, heartbeatSamples);
+			AudioTools.applyFilter(bandpass, heartbeatSamples);
 			//	Peaking filter
 			IirFilterCoefficients coeffs = CHEST_RESONANCE_IIRPEAK_COEFFS.get(sampleRate);
 			if(coeffs == null)
 				throw new IllegalArgumentException("Unsupported sample rate for filtering: " + sampleRate);
-			final IirFilter iirChris = new IirFilter(coeffs);
-			iirChris.apply(heartbeatSamples);
+			AudioTools.applyFilter(new IirFilter(coeffs), heartbeatSamples);
 		}
 
 		// Return normalised samples:
-		return normalise(heartbeatSamples);
+		return AudioTools.normalise(heartbeatSamples);
 	}
 
 	/**
@@ -245,7 +244,7 @@ public final class Heartbeat {
 
 	static private double[] ekgHannSegment(final int pulse_Ns, final double pulseDivider, final double ampMultiplier) {
 		final double amp = (0.75 + r.nextDouble() / 2.0) * ampMultiplier;
-		return mult(amp, hann(ekgSegmentLength(pulse_Ns, pulseDivider)));
+		return AudioTools.gain(amp, hann(ekgSegmentLength(pulse_Ns, pulseDivider)));
 	}
 
 	static private void advanceBuffer(final Buffer buffer, final int distance) {
@@ -259,52 +258,10 @@ public final class Heartbeat {
 	 * @param length length of the hann window
 	 * @return the values in the window
 	 */
-	static double[] hann(final int length) {
+	static private double[] hann(final int length) {
 		final double[] w = new double[length];
 		for(int n = 0; n < length; n++)
 			w[n] = 0.5f * (1.0 - Math.cos(TWO_PI * n / (length - 1)));
 		return w;
-	}
-
-	/**
-	 * Applies in-place normalisation of the given samples with respect to max(abs(samples)).
-	 *
-	 * @param samples the samples to normalise
-	 * @return the given array
-	 */
-	static double[] normalise(final double[] samples) {
-		double maxAbs = 0.0;
-		// Find max(abs(s))
-		for(double sample : samples)
-			if(Math.abs(sample) > maxAbs)
-				maxAbs = Math.abs(sample);
-		// Normalise:
-		return mult(1.0 / maxAbs, samples);
-	}
-
-	/**
-	 * In-place vector multiplication
-	 *
-	 * @param multiplier the multiplication factor
-	 * @param vector array to apply it to
-	 * @return the given array
-	 */
-	static double[] mult(final double multiplier, final double[] vector) {
-		for(int i = 0; i < vector.length; i++)
-			vector[i] = multiplier * vector[i];
-		return vector;
-	}
-
-	/**
-	 * In-place Cascade filter application
-	 *
-	 * @param filter Cascade filter
-	 * @param vector array to apply it to
-	 * @return the given array
-	 */
-	static double[] applyFilter(final Cascade filter, final double[] vector) {
-		for(int i = 0; i < vector.length; i++)
-			vector[i] = filter.filter(vector[i]);
-		return vector;
 	}
 }

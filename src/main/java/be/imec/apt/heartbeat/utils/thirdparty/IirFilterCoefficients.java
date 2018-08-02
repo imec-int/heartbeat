@@ -14,7 +14,7 @@
  *  This module is provided "as is", without warranties of any kind.
  */
 
-package be.imec.apt.heartbeat.utils;
+package be.imec.apt.heartbeat.utils.thirdparty;
 
 /**
 * The coefficients for an IIR filter.

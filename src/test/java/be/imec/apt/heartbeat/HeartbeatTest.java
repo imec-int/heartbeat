@@ -47,11 +47,11 @@ public class HeartbeatTest {
 	public void generateAllHeartbeatFiles() throws IOException {
 		final int numBeats = 1;
 		for(int sampleRate : Arrays.asList(44100, 48000)) {
-			for (boolean filtered : new boolean[]{false, true}) {
+			for(boolean filtered : new boolean[]{false, true}) {
 				final File folder = new File(new File(new File(System.getProperty("user.dir"), "output"), sampleRate + "Hz"), (!filtered ? "un" : "") + "filtered");
 				folder.mkdir();
 				System.out.println("Path for " + (!filtered ? "un" : "") + "filtered wave files: " + folder.getAbsolutePath());
-				for (float tempoBpm = 40; tempoBpm <= 190; tempoBpm++)
+				for(float tempoBpm = 40; tempoBpm <= 190; tempoBpm++)
 					Heartbeat.writeHeartbeatFile(folder, tempoBpm, numBeats, sampleRate, filtered);
 				assertEquals(folder.listFiles().length, 190 - 40 + 1);
 			}
