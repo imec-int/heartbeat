@@ -107,7 +107,7 @@ public final class Heartbeat {
 
 	private Heartbeat() {}
 
-	static public File writeHeartbeatFile(final File folder, final float tempoBpm, final int numBeats, final int sampleRate, final boolean filtered) throws IOException {
+	static public File writeHeartbeatFile(final File folder, final float tempoBpm, final int numBeats, final int sampleRate, final int bitsPerSample, final boolean filtered) throws IOException {
 		// Create file (will be overwritten if existing!):
 		final File wav = new File(folder, "Heartbeat" + (numBeats > 1 ? "s" : "") + "_" + ((int) tempoBpm) + "bpm.wav");
 		//noinspection ResultOfMethodCallIgnored
@@ -115,12 +115,15 @@ public final class Heartbeat {
 
 		// Prepare WaveFileWriter:
 		WaveFileWriter waveFileWriter = new WaveFileWriter(wav);
-		waveFileWriter.setBitsPerSample(16);	// 16bits per sample
+		waveFileWriter.setBitsPerSample(bitsPerSample);	// throws IllegalArgumentException if not 16 or 24
 		waveFileWriter.setFrameRate(sampleRate);
 		waveFileWriter.setSamplesPerFrame(1);	// Mono
 
 		// Synthesize heartbeats samples and write to wav file:
-		waveFileWriter.write(synthHeartbeats16bit(tempoBpm, numBeats, sampleRate, filtered));
+		if(bitsPerSample == 16)
+			waveFileWriter.write(synthHeartbeats16bit(tempoBpm, numBeats, sampleRate, filtered));
+		else
+			waveFileWriter.write(synthHeartbeats24bit(tempoBpm, numBeats, sampleRate, filtered));
 
 		return wav;
 	}
@@ -130,14 +133,29 @@ public final class Heartbeat {
 	}
 
 	static public short[] synthHeartbeats16bit(final float tempoBpm, final int numBeats, final int sampleRate, final boolean filtered) {
-		final double[] samples = synthHeartbeats64bit(tempoBpm, numBeats, sampleRate, filtered);
+		final double[] samples64b = synthHeartbeats64bit(tempoBpm, numBeats, sampleRate, filtered);
 
 		// Convert to 16bit PCM:
-		final short[] shorts = new short[samples.length];
-		for(int s = 0; s < samples.length; s++)
-			shorts[s] = WaveFileWriter.convertToPCM16(samples[s]);
+		final short[] samples16b = new short[samples64b.length];
+		for(int s = 0; s < samples64b.length; s++)
+			samples16b[s] = WaveFileWriter.convertToPCM16(samples64b[s]);
 
-		return shorts;
+		return samples16b;
+	}
+
+	static public int[] synthHeartbeats24bit(final float tempoBpm, final int numBeats, final int sampleRate) {
+		return synthHeartbeats24bit(tempoBpm, numBeats, sampleRate, true);
+	}
+
+	static public int[] synthHeartbeats24bit(final float tempoBpm, final int numBeats, final int sampleRate, final boolean filtered) {
+		final double[] samples64b = synthHeartbeats64bit(tempoBpm, numBeats, sampleRate, filtered);
+
+		// Convert to 24bit PCM:
+		final int[] samples24b = new int[samples64b.length];
+		for(int s = 0; s < samples64b.length; s++)
+			samples24b[s] = WaveFileWriter.convertToPCM24(samples64b[s]);
+
+		return samples24b;
 	}
 
 	static public double[] synthHeartbeats64bit(final float tempoBpm, final int numBeats, final int sampleRate) {

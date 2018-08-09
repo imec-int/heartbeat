@@ -122,6 +122,11 @@ public class WaveFileWriter /*implements AudioOutputStream*/ {
     }
 
     /** Write audio to the WAV file. */
+    public void write(int[] buffer) throws IOException {
+        write(buffer, 0, buffer.length);
+    }
+
+    /** Write audio to the WAV file. */
     public void write(short[] buffer) throws IOException {
         write(buffer, 0, buffer.length);
     }
@@ -189,6 +194,13 @@ public class WaveFileWriter /*implements AudioOutputStream*/ {
 
     /** Write audio to the WAV file. */
     public void write(float[] buffer, int start, int count) throws IOException {
+        for (int i = 0; i < count; i++) {
+            write(buffer[start + i]);
+        }
+    }
+
+    /** Write audio to the WAV file. */
+    public void write(int[] buffer, int start, int count) throws IOException {
         for (int i = 0; i < count; i++) {
             write(buffer[start + i]);
         }

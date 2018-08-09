@@ -41,20 +41,22 @@ public class HeartbeatTest {
 
 	@Test
 	public void testWriteHeartbeatFile() throws IOException {
-		assertTrue(Heartbeat.writeHeartbeatFile(tempFolder.newFolder(), 60, 10, 44100, true).exists());
+		assertTrue(Heartbeat.writeHeartbeatFile(tempFolder.newFolder(), 60, 10, 44100, 16, true).exists());
 	}
 
 	@Test
 	public void generateAllHeartbeatFiles() throws IOException {
 		for(int sampleRate : Arrays.asList(44100, 48000, 96000)) {
-			for(boolean filtered : new boolean[]{false, true}) {
-				final File folder = new File(new File(new File(System.getProperty("user.dir"), "output"), sampleRate + "Hz"), (!filtered ? "un" : "") + "filtered");
-				folder.mkdirs();
-				assertTrue(folder.exists());
-				System.out.println("Path for " + (!filtered ? "un" : "") + "filtered wave files: " + folder.getAbsolutePath());
-				for(float tempoBpm = 40; tempoBpm <= 190; tempoBpm++)
-					Heartbeat.writeHeartbeatFile(folder, tempoBpm, 1, sampleRate, filtered);
-				assertEquals(Objects.requireNonNull(folder.listFiles((File file, String name) -> name.matches("Heartbeat_[0-9]+bpm.wav"))).length, 190 - 40 + 1);
+			for(int bitsPerSample : Arrays.asList(16, 24)) {
+				for(boolean filtered : new boolean[]{false, true}) {
+					final File folder = new File(new File(new File(System.getProperty("user.dir"), "output"), bitsPerSample + "bits@" + sampleRate + "Hz"), (!filtered ? "un" : "") + "filtered");
+					folder.mkdirs();
+					assertTrue(folder.exists());
+					System.out.println("Path for " + (!filtered ? "un" : "") + "filtered wave files: " + folder.getAbsolutePath());
+					for(float tempoBpm = 40; tempoBpm <= 190; tempoBpm++)
+						Heartbeat.writeHeartbeatFile(folder, tempoBpm, 1, sampleRate, bitsPerSample, filtered);
+					assertEquals(Objects.requireNonNull(folder.listFiles((File file, String name) -> name.matches("Heartbeat_[0-9]+bpm.wav"))).length, 190 - 40 + 1);
+				}
 			}
 		}
 	}
