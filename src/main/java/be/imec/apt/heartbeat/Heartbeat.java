@@ -155,6 +155,13 @@ public final class Heartbeat {
 	}
 
 	static int calculateTotalSamples(final float tempoBpm, final int numBeats, final int sampleRate) {
+		// Checks:
+		if(tempoBpm <= 0)
+			throw new IllegalArgumentException("tempoBpm must be positive!");
+		if(numBeats <= 0)
+			throw new IllegalArgumentException("numBeats must be positive!");
+		if(sampleRate <= 0)
+			throw new IllegalArgumentException("sampleRate must be positive!");
 		// Durations and number of samples
 		//	Calculate the duration of one beat and all the beats.
 		final double beatDur	= (60.0 / tempoBpm);
