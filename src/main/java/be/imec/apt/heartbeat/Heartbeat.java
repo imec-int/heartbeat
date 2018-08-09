@@ -109,7 +109,8 @@ public final class Heartbeat {
 
 	static public File writeHeartbeatFile(final File folder, final float tempoBpm, final int numBeats, final int sampleRate, final boolean filtered) throws IOException {
 		// Create file (will be overwritten if existing!):
-		final File wav = new File(folder, "Heartbeats_" + ((int) tempoBpm) + "bpm.wav");
+		final File wav = new File(folder, "Heartbeat" + (numBeats > 1 ? "s" : "") + "_" + ((int) tempoBpm) + "bpm.wav");
+		//noinspection ResultOfMethodCallIgnored
 		wav.createNewFile();
 
 		// Prepare WaveFileWriter:

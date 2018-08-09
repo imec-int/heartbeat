@@ -13,6 +13,7 @@ import org.junit.rules.TemporaryFolder;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,15 +46,15 @@ public class HeartbeatTest {
 
 	@Test
 	public void generateAllHeartbeatFiles() throws IOException {
-		final int numBeats = 1;
-		for(int sampleRate : Arrays.asList(44100, 48000)) {
+		for(int sampleRate : Arrays.asList(44100, 48000, 96000)) {
 			for(boolean filtered : new boolean[]{false, true}) {
 				final File folder = new File(new File(new File(System.getProperty("user.dir"), "output"), sampleRate + "Hz"), (!filtered ? "un" : "") + "filtered");
-				folder.mkdir();
+				folder.mkdirs();
+				assertTrue(folder.exists());
 				System.out.println("Path for " + (!filtered ? "un" : "") + "filtered wave files: " + folder.getAbsolutePath());
 				for(float tempoBpm = 40; tempoBpm <= 190; tempoBpm++)
-					Heartbeat.writeHeartbeatFile(folder, tempoBpm, numBeats, sampleRate, filtered);
-				assertEquals(folder.listFiles().length, 190 - 40 + 1);
+					Heartbeat.writeHeartbeatFile(folder, tempoBpm, 1, sampleRate, filtered);
+				assertEquals(Objects.requireNonNull(folder.listFiles((File file, String name) -> name.matches("Heartbeat_[0-9]+bpm.wav"))).length, 190 - 40 + 1);
 			}
 		}
 	}
