@@ -256,12 +256,12 @@ public final class Heartbeat {
 	 * https://en.wikipedia.org/wiki/Hann_function
 	 *
 	 * @param length length of the hann window
-	 * @return the values in the window
+	 * @return array containing the values in the window
 	 */
 	static private double[] hann(final int length) {
 		final double[] w = new double[length];
 		for(int n = 0; n < length; n++)
-			w[n] = 0.5f * (1.0 - Math.cos(TWO_PI * n / (length - 1)));
+			w[n] = 0.5 * (1.0 - Math.cos(TWO_PI * n / (length - 1)));
 		return w;
 	}
 }
